@@ -1,6 +1,6 @@
 # Python version of the NWM Conceptual Functional Equivalent (CFE) model
 
-This README file is adapted from Jonathan Frame's repository https://github.com/jmframe/cfe.git in py_cfe folder
+This README file is adapted from the one in Jonathan Frame's repository https://github.com/jmframe/cfe.git under the py_cfe folder
 
 This directory contains a Python version of the same CFE model as written in C contained in the `../src/` directory. This version is intended for learning and quick prototyping model development, but should also be fully functional within the Nextgen Framework.
 

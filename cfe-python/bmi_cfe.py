@@ -123,8 +123,6 @@ class BMI_CFE():
         # Inputs
         self.timestep_rainfall_input_m = 0
         self.potential_et_m_per_s      = 0
-
-        self.surface_partitioning_scheme = "Schaake"
         
         # ________________________________________________
         # calculated flux variables
@@ -329,7 +327,7 @@ class BMI_CFE():
         self.K_nash                     = data_loaded['K_nash']
         self.nash_storage               = np.array(data_loaded['nash_storage'])
         self.giuh_ordinates             = np.array(data_loaded['giuh_ordinates'])
-        #self.giuh_ordinates             = np.array([0.3,0.1,0.1,0.1,0.1,0.1,0.1,0.1])
+        self.surface_partitioning_scheme= data_loaded['scheme']
 
         # ___________________________________________________
         # OPTIONAL CONFIGURATIONS

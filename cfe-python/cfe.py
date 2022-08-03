@@ -391,11 +391,12 @@ class CFE():
             -------------------------------------------------------------------------
             Written by RLM May 2021
             Adapted by JMFrame September 2021 for new version of CFE
+            Further adapted by QiyueL August 2022 for python version of CFE
             ------------------------------------------------------------------------
             Inputs
-            double  water_input_depth_m           amount of water input to soil surface this time step [m]
-            double  field_capacity_m              amount of water stored in soil reservoir when at field capacity [m]
-            double  max_soil_moisture_storage_m   total storage of the soil moisture reservoir (porosity*soil thickness) [m]
+            double  time_step_rainfall_input_m           amount of water input to soil surface this time step [m]
+            double  field_capacity_m                     amount of water stored in soil reservoir when at field capacity [m]
+            double  max_soil_moisture_storage_m          total storage of the soil moisture reservoir (porosity*soil thickness) [m]
             double  column_total_soil_water_m     current storage of the soil moisture reservoir [m]
             double  a_inflection_point_parameter  a parameter
             double  b_shape_parameter             b parameter
@@ -407,15 +408,8 @@ class CFE():
             ------------------------------------------------------------------------- 
         """
 
-        # water_input_depth_m = timestep_rainfall_input_m
-        # field_capacity_m = storage_threshold_primary_m
-        # max_soil_moisture_storage_m = storage_max_m
-        # column_total_soil_water_m = storage_m
-        # direct_runoff_parameters_structure
-        # surface_runoff_depth_m
-
         # partition the total soil water in the column between free water and tension water
-        free_water_m = cfe_state.timestep_rainfall_input_m - cfe_state.soil_reservoir['storage_threshold_primary_m'];
+        free_water_m = cfe_state.soil_reservoir['storage_m']- cfe_state.soil_reservoir['storage_threshold_primary_m'];
 
         if (0.0 < free_water_m):
 
@@ -424,11 +418,11 @@ class CFE():
         else: 
 
             free_water_m = 0.0;
-            tension_water_m = cfe_state.soil_reservoir["storage_m"];
+            tension_water_m = cfe_state.soil_reservoir['storage_m']
         
         # estimate the maximum free water and tension water available in the soil column
-        max_free_water_m = cfe_state.soil_reservoir['storage_max_m'] - cfe_state.soil_reservoir['storage_threshold_primary_m'];
-        max_tension_water_m = cfe_state.soil_reservoir['storage_threshold_primary_m'];
+        max_free_water_m = cfe_state.soil_reservoir['storage_max_m'] - cfe_state.soil_reservoir['storage_threshold_primary_m']
+        max_tension_water_m = cfe_state.soil_reservoir['storage_threshold_primary_m']
 
         # check that the free_water_m and tension_water_m do not exceed the maximum and if so, change to the max value
         if(max_free_water_m < free_water_m): 
@@ -457,8 +451,8 @@ class CFE():
             pervious_runoff_m = cfe_state.timestep_rainfall_input_m * \
                 (np.power((0.5 - a_Xinanjiang_inflection_point_parameter),\
                     (1.0 - b_Xinanjiang_shape_parameter)) * \
-                        pow((1.0 - (tension_water_m/max_tension_water_m)),\
-                            b_Xinanjiang_shape_parameter));
+                        np.pow((1.0 - (tension_water_m/max_tension_water_m)),\
+                            b_Xinanjiang_shape_parameter))
 
         else: 
             pervious_runoff_m = cfe_state.timestep_rainfall_input_m* \
